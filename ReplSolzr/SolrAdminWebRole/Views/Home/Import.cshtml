@@ -1,0 +1,86 @@
+@{
+    ViewBag.Title = "Import Data";
+}
+
+<h2>@ViewBag.Message</h2>
+
+<div><b>Request:</b></div>
+
+<script type="text/javascript">
+
+    function bodyLoadEventHandler() { }
+
+    function importWikipediaDataClickHandler() {
+        var xhrHelper = new XHRHelper();
+        xhrHelper.post({
+            url: "/Home/ImportWikipediaData",
+            successCallback: function (msg, textStatus, XMLHTTPRequest) {
+                var result = document.getElementById("result");
+                if (msg != null) {
+                    result.innerHTML = "Successful";
+                }
+                else {
+                    result.innerHTML = "Failed";
+                }
+            },
+            errorCallback: function (XMLHttpRequest, textStatus, errorThrown) {
+                var result = document.getElementById("result");
+                result.innerHTML = "Failed";
+            }
+        });
+    }
+
+    function deleteAllClickHandler() {
+        if (!confirm("This will delete the entire index! Are you sure?"))
+            return;
+
+        var xhrHelper = new XHRHelper();
+        xhrHelper.post({
+            url: "/Home/DeleteAll",
+            successCallback: function (msg, textStatus, XMLHTTPRequest) {
+                var result = document.getElementById("result");
+                if (msg != null) {
+                    result.innerHTML = "Successful";
+                } else {
+                    result.innerHTML = "Failed";
+                }
+            },
+            errorCallback: function (XMLHttpRequest, textStatus, errorThrown) {
+                var result = document.getElementById("result");
+                result.innerHTML = "Failed";
+            }
+        });
+    }
+</script>
+
+<table cellpadding="2" cellspacing="2" border="0">
+    <tr>
+        <td>
+            <input type="button" id="ImportWikipediaData" value="Import Wikipedia Data from Blob" onclick="importWikipediaDataClickHandler()" />
+        </td>
+
+        <td>
+            <b>&nbsp;&nbsp;OR&nbsp;&nbsp;</b>
+        </td>
+
+        <td>
+            <form action="UploadFile" enctype="multipart/form-data" method="post">
+                <input type="file" name="PostedFile" size="50" />
+                <input type="submit" name="Upload" value="Upload File" />
+            </form>
+        </td>
+
+        <td>
+            <b>&nbsp;&nbsp;OR&nbsp;&nbsp;</b>
+        </td>
+
+        <td>
+            <input type="button" id="DeleteAll" value="Delete All Data!" onclick="deleteAllClickHandler()" />
+        </td>
+        
+    </tr>
+</table>
+
+<hr />
+<div><b>Response:</b></div>
+<pre id="result" style="width:900px; height: 300px; border:1px solid #000; overflow: auto;">@ViewBag.Result</pre>

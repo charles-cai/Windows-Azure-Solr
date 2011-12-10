@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ServiceConfiguration serviceName="ReplSolzr" xmlns="http://schemas.microsoft.com/ServiceHosting/2008/10/ServiceConfiguration" osFamily="1" osVersion="*">
+  <Role name="SolrAdminWebRole">
+    <Instances count="1" />
+    <ConfigurationSettings>
+      <Setting name="SolrMasterHostWorkerRoleExternalEndpointPort" value="21000" />
+      <Setting name="SolrSlaveHostWorkerRoleExternalEndpointPort" value="20000" />
+    </ConfigurationSettings>
+    <Certificates>
+    </Certificates>
+  </Role>
+  <Role name="SolrMasterHostWorkerRole">
+    <Instances count="1" />
+    <ConfigurationSettings>
+      <Setting name="DataConnectionString" value="" />
+      <Setting name="CloudDriveSize" value="102400" />
+    </ConfigurationSettings>
+    <Certificates>
+    </Certificates>
+  </Role>
+  <Role name="SolrSlaveHostWorkerRole">
+    <Instances count="2" />
+    <ConfigurationSettings>
+      <Setting name="DataConnectionString" value="" />
+      <Setting name="CloudDriveSize" value="102400" />
+      <Setting name="SolrMasterHostWorkerRoleExternalEndpointPort" value="21000" />
+    </ConfigurationSettings>
+    <Certificates>
+    </Certificates>
+  </Role>
+</ServiceConfiguration>

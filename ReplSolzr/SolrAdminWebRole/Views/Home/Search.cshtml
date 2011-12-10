@@ -1,0 +1,49 @@
+@{
+    ViewBag.Title = "Search";
+}
+
+<h2>@ViewBag.Message</h2>
+
+<script type="text/javascript">
+
+    function bodyLoadEventHandler() { }
+
+    function searchTextClickHandler() {
+        var txtSearch = document.getElementById("searchText");
+        if (txtSearch.value == txtSearch.defaultValue) {
+            txtSearch.value = "";
+        }
+    }
+
+    function searchTextBlurHandler() {
+        var txtSearch = document.getElementById("searchText");
+        if (txtSearch.value == "") {
+            txtSearch.value = txtSearch.defaultValue;
+        }
+    }
+</script>
+
+<hr />
+<div><b>Request:</b></div>
+<form id="searchForm" action="Search" method="post">
+    <input type="text" id="searchText" name="searchText" size="20" value="@ViewBag.SearchText" onclick="searchTextClickHandler()" onblur="searchTextBlurHandler()" />&nbsp;&nbsp;<input type="submit" id="doSearch" name="doSearch" value="Search" />
+</form>
+
+<hr />
+<div><b>Response:</b></div>
+<div id="searchResult" style="width:900px; height: 500px; border:1px solid #000; overflow: auto;">
+    <p>@ViewBag.SearchStatus</p>
+
+    @if (ViewBag.SearchResults != null)
+    {
+        <ul>
+        @foreach (SolrAdminWebRole.Controllers.SearchResult result in ViewBag.SearchResults)
+        {
+            <li>
+                <div><b><a href="@result.Url" target="_blank">@result.Title</a></div>
+                <div>@result.Url</div>
+            </li>
+        }
+    </ul>
+    }
+</div>

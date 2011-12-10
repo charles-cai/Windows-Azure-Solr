@@ -1,0 +1,33 @@
+@{
+    Layout = "~/Views/Shared/_Layout2.cshtml";
+    ViewBag.Title = "Solr Instance Status";
+}
+
+<div id="status">
+    @foreach (SolrAdminWebRole.Controllers.SolrInstanceStatus status in ViewBag.Statuses)
+    {
+        <p>
+            <b>@status.InstanceName [@status.Url]: </b>
+            @if (status.IsReady)
+            { <text>Ready</text> }
+            else
+            { <text>Not Ready</text> }
+        </p>
+        
+        if (status.IsReady)
+        {
+            <ul>
+                <li><b>Index Version: </b>@status.IndexVersion</li>
+                <li><b>Generation: </b>@status.Generation</li>
+                <li><b>Index Size: </b>@status.IndexSize</li>
+                @if (!status.IsMaster)
+                {
+                    <li><b>Poll Interval: </b>@status.PollInterval</li>
+                    <li><b>Number of times replicated: </b>@status.NumTimesReplicated</li>
+                    <li><b>Last Replication at: </b>@status.LastReplicationTime</li>
+                    <li><b>Next Replication at: </b>@status.NextReplicationTime</li>
+                }
+            </ul>
+        }
+    }
+</div>

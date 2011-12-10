@@ -1,0 +1,70 @@
+@{
+    ViewBag.Title = "Solzr (solr-On-Azure) Admin";
+}
+
+<h2>@ViewBag.Message</h2>
+
+<div>System Status: @ViewBag.StatusMessage</div>
+
+<script type="text/javascript">
+
+    function bodyLoadEventHandler() { }
+
+    function viewMasterStatusClickHandler() {
+        var frameViewMaster = document.getElementById("frmViewMaster");
+        frameViewMaster.src = '/Home/SolrAdmin?role=master';
+    }
+
+    function viewSlaveStatusClickHandler() {
+        var frameViewSlave = document.getElementById("frmViewSlave");
+        frameViewSlave.src = "/Home/SolrAdmin?role=slave";
+    }
+
+    function disableReplClickHandler() {
+        var xhrHelper = new XHRHelper();
+        xhrHelper.post({
+            url: '/Home/DisableRepl',
+            successCallback: function (msg, textStatus, XMLHTTPRequest) {
+                location.reload();
+            },
+            errorCallback: function (XMLHttpRequest, textStatus, errorThrown) {
+                alert("Error disabling replication.");
+            }
+        });
+    }
+
+    function enableReplicationClickHandler() {
+        var xhrHelper = new XHRHelper();
+        xhrHelper.post({
+            url: '/Home/EnableRepl',
+            successCallback: function (msg, textStatus, XMLHTTPRequest) {
+                location.reload();
+            },
+            errorCallback: function (XMLHttpRequest, textStatus, errorThrown) {
+                alert("Error enabling replication.");
+            }
+        });
+    }
+</script>
+
+<div>&nbsp;</div>
+<table cellpadding="2" width="100%">
+    <tr>
+        <td><input type="button" class="viewbtn" id="masterAdmin" value="Refresh Master Status" onclick="viewMasterStatusClickHandler()" />
+            <input type="button" id="disableRepl" value="Disable Replication" onclick="disableReplClickHandler()" />
+            <input type="button" id="enableRepl" value="Enable Replication" onclick="enableReplicationClickHandler()" />
+        </td>
+        <td>
+            <input type="button" class="viewbtn" id="slaveAdmin" value="Refresh Slave Status" onclick="viewSlaveStatusClickHandler()" />
+        </td>
+    </tr>
+
+    <tr>
+        <td style="width:50%">
+            <iframe id="frmViewMaster" frameborder="1" width="100%" height="500" scrolling="auto" src="/Home/SolrAdmin?role=master"></iframe>
+        </td>
+        <td style="width:50%">
+            <iframe id="frmViewSlave" frameborder="1" width="100%" height="500" scrolling="auto" src="/Home/SolrAdmin?role=slave"></iframe>
+        </td>
+    </tr>
+</table>

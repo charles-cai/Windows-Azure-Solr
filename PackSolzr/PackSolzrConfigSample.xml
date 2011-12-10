@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Settings>
+  <ReplSolzrLocation></ReplSolzrLocation>
+  <JreLocation></JreLocation>
+  <SolrLocation></SolrLocation>
+  <CsdefLocation></CsdefLocation>
+  <CspackOutputLocation></CspackOutputLocation>
+  <AzureSdkBinLocation></AzureSdkBinLocation>
+  <ForEmulator>false</ForEmulator>
+  <AdminWebRoleVMSize>Small</AdminWebRoleVMSize>
+  <SolrMasterHostWorkerRoleVMSize>ExtraLarge</SolrMasterHostWorkerRoleVMSize>
+  <SolrSlaveHostWorkerRoleVMSize>Large</SolrSlaveHostWorkerRoleVMSize>
+</Settings>

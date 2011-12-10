@@ -1,0 +1,175 @@
+@{
+    ViewBag.Title = "Crawl Site";
+}
+<h2>@ViewBag.Message</h2>
+<script type="text/javascript">
+
+    var timer;
+    var crawledUrlIndex = 0;
+
+    function bodyLoadEventHandler(){
+        @if (ViewBag.IsCrawlingInProgess == true)
+        {
+            <text>var isCrawlingInProgress = true;  </text> 
+        }
+        else
+        {
+             <text>var isCrawlingInProgress = false;  </text> 
+        }
+
+        if (isCrawlingInProgress == true) {
+           var siteUrl = document.getElementById("siteUrl");
+           siteUrl.setAttribute("disabled", "disabled");
+           
+           var startCrawl = document.getElementById("startCrawl");
+           startCrawl.setAttribute("disabled", "disabled");
+
+           timer = setTimeout("getCrawlerStatus()", 5000);
+        }        
+    }
+
+
+    function txtSiteUrlClickHandler()
+    {
+        var txtSiteUrl = document.getElementById("siteUrl");
+        if (txtSiteUrl.value == txtSiteUrl.defaultValue) {
+            txtSiteUrl.value = "";
+        }
+    }
+
+    function txtSiteUrlBlurHandler(){
+        var txtSiteUrl = document.getElementById("siteUrl");
+        if (txtSiteUrl.value == "") {
+            txtSiteUrl.value = txtSiteUrl.defaultValue;
+        }
+    }
+
+    function deleteAllClickHandler(){
+        if (!confirm("This will delete the entire index! Are you sure?"))
+                return;
+
+         var xhrHelper = new XHRHelper();
+            xhrHelper.post({
+                url: "/Home/DeleteAll",
+                successCallback: function (msg, textStatus, XMLHTTPRequest) {
+                    var result = document.getElementById("result");
+                    if(msg != null){
+                        result.innerHTML = "Successful";
+                    }else{
+                        result.innerHTML = "Failed";
+                    }
+                },
+                errorCallback: function (XMLHttpRequest, textStatus, errorThrown) {
+                    var result = document.getElementById("result");
+                    result.innerHTML = "Failed";
+                }
+            });
+    }
+
+    function stopCrawlClickHandler(){
+        clearTimeout(timer);
+        var xhrHelper = new XHRHelper();
+        xhrHelper.get({ 
+            url: "StopCrawler?crawlUrlIndex=" + crawledUrlIndex + "&random=" + Math.random(),   
+            successCallback: function (msg, textStatus, XMLHTTPRequest) 
+            {
+                var messageParts = msg.split(",");
+                var status = messageParts[0];
+                 if (status == "NoCrawlperationInProgress") {
+                    alert("No crawl operation in progress.");
+                    return;
+                }
+                var siteUrl = document.getElementById("siteUrl");
+                siteUrl.removeAttribute("disabled");
+
+                var startCrawl = document.getElementById("startCrawl");
+                startCrawl.removeAttribute("disabled");
+
+                var stopCrawl = document.getElementById("stopCrawl");
+                stopCrawl.setAttribute("disabled", "disabled");
+
+                crawledUrlIndex = parseInt(messageParts[1]);
+
+                var result = document.getElementById("result");
+                for (var i = 2; i < messageParts.length; i++) {
+                    var message = "<span>" + messageParts[i] + "</span></br>";
+                    result.innerHTML = result.innerHTML + message;
+                }
+                result.innerHTML = result.innerHTML + "<span>Crawled Stopped</span></br>";
+            },
+            errorCallback: function(XMLHttpRequest, textStatus, errorThrown){
+                 alert("Error occured while trying to stop crawler operation.");
+            }
+        });
+    }
+
+
+    function getCrawlerStatus() {
+        clearTimeout(timer);
+        var xhrHelper = new XHRHelper();
+        xhrHelper.get({ 
+            url: "GetCrawlStatus?crawlUrlIndex=" + crawledUrlIndex + "&random=" + Math.random(),
+            successCallback: function (msg, textStatus, XMLHTTPRequest) 
+            {
+                var messageParts = msg.split(",");
+                var status = messageParts[0];
+                
+                var result = document.getElementById("result");
+                if (messageParts[0] == "Complete") {
+                    result.innerHTML = result.innerHTML + "<span>Crawling Completed</span>";
+                    crawledUrlIndex = 0;
+
+                    var siteUrl = document.getElementById("siteUrl");
+                    siteUrl.removeAttribute("disabled");
+                    
+                    var siteCrawl = document.getElementById("startCrawl");
+                    siteCrawl.removeAttribute("disabled");
+                    return;
+                }
+
+                if(messageParts.length <= 2){
+                    return;
+                }
+                crawledUrlIndex = parseInt(messageParts[1]);
+                var result = document.getElementById("result");
+                for (var i = 2; i < messageParts.length; i++) {
+                    var url = "<span>" + messageParts[i] + "</span></br>";
+                    result.innerHTML = result.innerHTML + url;
+                }
+                timer = setTimeout("getCrawlerStatus()", 5000);
+            },
+            errorCallback: function(XMLHttpRequest, textStatus, errorThrown){
+                 alert("Error fetching crawler status.");
+            }
+        });        
+    }
+</script>
+<hr />
+<div>
+    <b>Request:</b></div>
+<table cellpadding="2" cellspacing="2" border="0">
+    <tr>
+        <td>
+            <form action="Crawl" method="post">
+            <input type="text" id="siteUrl" name="siteUrl" size="30" value="@ViewBag.SiteUrl" onclick="txtSiteUrlClickHandler()" onblur="txtSiteUrlBlurHandler()" />&nbsp;&nbsp;
+            <input type="submit" id="startCrawl" name="startCrawl" value="Start Crawl" />
+            <input type="button" id="stopCrawl" name="stopCrawl" value="Stop Crawl" onclick="stopCrawlClickHandler()" />
+            </form>
+        </td>
+        <td>
+            <b>&nbsp;&nbsp;OR&nbsp;&nbsp;</b>
+        </td>
+        <td>
+            <input type="button" id="DeleteAll" value="Delete All Data!" onclick="deleteAllClickHandler()" />
+        </td>
+    </tr>
+</table>
+<hr />
+<div>
+    <b>Response:</b></div>
+<pre id="result" style="width: 900px; height: 300px; border: 1px solid #000; overflow: auto;">
+    @if (ViewBag.IsCrawlingInProgess == true)
+    { 
+        <text><span>Crawling started</span></text>
+    }
+</pre>

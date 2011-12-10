@@ -1,0 +1,56 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ServiceDefinition name="ReplSolzr" xmlns="http://schemas.microsoft.com/ServiceHosting/2008/10/ServiceDefinition">
+  <WebRole name="SolrAdminWebRole" vmsize="Small">
+    <Runtime executionContext="elevated">
+    </Runtime>
+    <Sites>
+      <Site name="Web">
+        <Bindings>
+          <Binding name="Endpoint1" endpointName="Endpoint1" />
+        </Bindings>
+      </Site>
+    </Sites>
+    <Endpoints>
+      <InputEndpoint name="Endpoint1" protocol="http" port="80" />
+    </Endpoints>
+    <Imports>
+    </Imports>
+    <Certificates>
+    </Certificates>
+    <ConfigurationSettings>
+      <Setting name="SolrMasterHostWorkerRoleExternalEndpointPort" />
+      <Setting name="SolrSlaveHostWorkerRoleExternalEndpointPort" />
+    </ConfigurationSettings>
+  </WebRole>
+  <WorkerRole name="SolrMasterHostWorkerRole" vmsize="Small">
+    <Imports>
+    </Imports>
+    <ConfigurationSettings>
+      <Setting name="DataConnectionString" />
+      <Setting name="CloudDriveSize" />
+    </ConfigurationSettings>
+    <LocalResources>
+      <LocalStorage name="AzureDriveCache" cleanOnRoleRecycle="false" sizeInMB="4096" />
+    </LocalResources>
+    <Endpoints>
+      <InternalEndpoint name="SolrMasterServiceEndpoint" protocol="tcp" />
+      <InputEndpoint name="SolrMasterEndpoint" protocol="tcp" port="21000" />
+    </Endpoints>
+  </WorkerRole>
+  <WorkerRole name="SolrSlaveHostWorkerRole" vmsize="Small">
+    <Imports>
+    </Imports>
+    <ConfigurationSettings>
+      <Setting name="DataConnectionString" />
+      <Setting name="CloudDriveSize" />
+      <Setting name="SolrMasterHostWorkerRoleExternalEndpointPort" />
+    </ConfigurationSettings>
+    <LocalResources>
+      <LocalStorage name="AzureDriveCache" cleanOnRoleRecycle="false" sizeInMB="4096" />
+    </LocalResources>
+    <Endpoints>
+      <InternalEndpoint name="SolrSlaveServiceEndpoint" protocol="tcp" />
+      <InputEndpoint name="SolrSlaveEndpoint" protocol="tcp" port="20000" />
+    </Endpoints>
+  </WorkerRole>
+</ServiceDefinition>
