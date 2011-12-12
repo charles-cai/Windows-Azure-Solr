@@ -45,7 +45,7 @@ Windows 64 bit Operating System for creating, packing and deploying to Windows A
 9. Package the code 
     - Create output folder `C:\temp\CSPACKAGE`
     - `cd C:\temp\solr\PackSolzr`
-    - Review the `C:\Temp\solr\PackSolzr\PackSolzrConfig.` and update with your path if different than the one in the tutorial
+    - Review the `C:\Temp\solr\PackSolzr\PackSolzrConfig.xml` and update with your path if different than the one in the tutorial
     - Run 
 
             PackSolzr.exe /configFilePath=PackSolzrConfig.xml
