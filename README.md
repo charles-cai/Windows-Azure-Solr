@@ -34,8 +34,8 @@ Windows 64 bit Operating System for creating, packing and deploying to Windows A
 
 
 7. Install Solr/Lucene
-    - We tested this project with Solr/Lucene 3.4 and Solr/Lucene 3.5. Solr can be downloaded from: http://www.apache.org/dyn/closer.cgi/lucene/solr/
-      In this tutorial we used 3.5 and unzip it in the root `C:\apache-solr-3.5.0`
+    - Solr/Lucene 3.4 we used for this project can be downloaded from: http://www.apache.org/dyn/closer.cgi/lucene/solr/
+      In this tutorial we unzip it in the root `C:\apache-solr-3.4.0`
 
 
 8. Download the Windows Azure Solr/Lucene project from this Github location
@@ -52,8 +52,7 @@ Windows 64 bit Operating System for creating, packing and deploying to Windows A
 
 10. Deploy to Azure 
     - `cd C:\temp\solr\DeploySolzr`
-    - Review the `C:\temp\solr\DeploySolzr\DeploySolzrConfig.xml`, add your Windows Azure credentials and update the paths if different than the one in the tutorial
-    Note: <HostedServiceName> tag expects the hosted service DNS prefix
+    - Review the `C:\temp\solr\DeploySolzr\DeploySolzrConfig.xml` and update with your path if different than the one in the tutorial
     - Run
 
             DeploySolzr.exe /configFilePath=DeploySolzrConfig.xml

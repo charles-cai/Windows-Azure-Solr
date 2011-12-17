@@ -1,4 +1,4 @@
-﻿@{
+@{
     ViewBag.Title = "Crawl Site";
 }
 <h2>@ViewBag.Message</h2>
@@ -92,10 +92,8 @@
 
                 var result = document.getElementById("result");
                 for (var i = 2; i < messageParts.length; i++) {
-                    if(messageParts[i] != ""){
-                        var message = "<span>" + messageParts[i] + "</span></br>";
-                        result.innerHTML = result.innerHTML + message;
-                    }
+                    var message = "<span>" + messageParts[i] + "</span></br>";
+                    result.innerHTML = result.innerHTML + message;
                 }
                 result.innerHTML = result.innerHTML + "<span>Crawled Stopped</span></br>";
             },
@@ -115,20 +113,8 @@
             {
                 var messageParts = msg.split(",");
                 var status = messageParts[0];
-                var result = document.getElementById("result");
-
-                crawledUrlIndex = parseInt(messageParts[1]);
-                if(messageParts.length > 2){
-                    var result = document.getElementById("result");
-                    for (var i = 2; i < messageParts.length; i++) {
-                        if(messageParts[i] == ""){
-                            continue;
-                        }
-                        var url = "<span>" + messageParts[i] + "</span></br>";
-                        result.innerHTML = result.innerHTML + url;
-                     }    
-                }
                 
+                var result = document.getElementById("result");
                 if (messageParts[0] == "Complete") {
                     result.innerHTML = result.innerHTML + "<span>Crawling Completed</span>";
                     crawledUrlIndex = 0;
@@ -139,6 +125,16 @@
                     var siteCrawl = document.getElementById("startCrawl");
                     siteCrawl.removeAttribute("disabled");
                     return;
+                }
+
+                if(messageParts.length <= 2){
+                    return;
+                }
+                crawledUrlIndex = parseInt(messageParts[1]);
+                var result = document.getElementById("result");
+                for (var i = 2; i < messageParts.length; i++) {
+                    var url = "<span>" + messageParts[i] + "</span></br>";
+                    result.innerHTML = result.innerHTML + url;
                 }
                 timer = setTimeout("getCrawlerStatus()", 5000);
             },
@@ -174,6 +170,6 @@
 <pre id="result" style="width: 900px; height: 300px; border: 1px solid #000; overflow: auto;">
     @if (ViewBag.IsCrawlingInProgess == true)
     { 
-<text><span>Crawling started</span></text>
+        <text><span>Crawling started</span></text>
     }
 </pre>

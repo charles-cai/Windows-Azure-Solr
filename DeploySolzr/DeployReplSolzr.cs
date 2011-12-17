@@ -26,7 +26,6 @@ namespace DeploySolzr
         public string deploymentPckgLoc { get; set; }
         public string masterWorkerRolePort { get; set; }
         public string slaveWorkerRolePort { get; set; }
-        public string deploymentSlotName { get; set; }
 
         private static System.Timers.Timer deployAppWaitTimer;
 
@@ -113,7 +112,7 @@ namespace DeploySolzr
 
                 authCert = GetAuthCertificate(certThumbprint);
                 requestXml = CreateDeploymentXml(configuration);
-                requestUri = string.Format("https://management.core.windows.net/{0}/services/hostedservices/{1}/deploymentslots/{2}", subscriptionId, hostedServiceName, deploymentSlotName);
+                requestUri = string.Format("https://management.core.windows.net/{0}/services/hostedservices/{1}/deploymentslots/production", subscriptionId, hostedServiceName);
 
                 webRequest = (HttpWebRequest)WebRequest.Create(requestUri);
                 webRequest.Method = "POST";

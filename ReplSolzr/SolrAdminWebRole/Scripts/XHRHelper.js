@@ -1,4 +1,4 @@
-﻿
+
 function XHRHelper() { }
 
 XHRHelper.prototype.get = function (options) {
