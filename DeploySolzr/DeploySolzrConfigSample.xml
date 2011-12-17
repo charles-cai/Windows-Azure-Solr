@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Settings>
   <SolrStorageAccName></SolrStorageAccName>
   <SolrStorageAccKey></SolrStorageAccKey>
@@ -10,6 +10,7 @@
   <SolrSlaveHostWorkerRoleInstCount>2</SolrSlaveHostWorkerRoleInstCount>
   <AdminWebRoleInstCount>1</AdminWebRoleInstCount>
   <DeploymentPckgLoc></DeploymentPckgLoc>
+  <DeploymentSlotName></DeploymentSlotName>
   <BlobBaseUrl></BlobBaseUrl>
   <CloudDriveSize>102400</CloudDriveSize>
   <SolrMasterHostWorkerRoleExternalEndpointPort>21000</SolrMasterHostWorkerRoleExternalEndpointPort>
