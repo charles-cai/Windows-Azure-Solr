@@ -22,6 +22,7 @@ namespace DeploySolzr
         private static string _masterWorkerRolePort;
         private static string _slaveWorkerRolePort;
         private static string _blobBaseUrl;
+        private static string _deploymentSlotName;
 
         static void Main(string[] args)
         {
@@ -53,6 +54,7 @@ namespace DeploySolzr
             deploymentHandler.solrStorageAccKey = _solrStorageAccKey;
             deploymentHandler.solrStorageAccName = _solrStorageAccName;
             deploymentHandler.subscriptionId = _subscriptionId;
+            deploymentHandler.deploymentSlotName = _deploymentSlotName;
 
             deploymentHandler.Deploy();
             blobHandler.DeletePackageBlob(_deploymentPckgLoc, _blobBaseUrl, _solrStorageAccName, _solrStorageAccKey);
@@ -89,6 +91,7 @@ namespace DeploySolzr
             _masterWorkerRolePort = (from eachNode in configFile.Descendants("SolrMasterHostWorkerRoleExternalEndpointPort") select eachNode.Value).FirstOrDefault();
             _slaveWorkerRolePort = (from eachNode in configFile.Descendants("SolrSlaveHostWorkerRoleExternalEndpointPort") select eachNode.Value).FirstOrDefault();
             _blobBaseUrl = (from eachNode in configFile.Descendants("BlobBaseUrl") select eachNode.Value).FirstOrDefault();
+            _deploymentSlotName = (from eachNode in configFile.Descendants("DeploymentSlotName") select eachNode.Value).FirstOrDefault().ToLower();
 
             return true;
         }
